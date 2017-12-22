@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.smbms.dao.user.UserMapper">
+	<!-- 查询所有用户的记录数 -->
+	<select id="count" resultType="int">
+		select * from smbms_user
+	</select>
+	<!-- <select id="getUserList" resultType="User">
+		select * from smbms_user
+	</select> -->
+	<select id="getUserListResultMap" resultMap="userList"
+		parameterType="User">
+		SELECT u.*,r.roleName
+		FROM smbms_user u,smbms_role r
+		WHERE u.userName LIKE CONCAT('%',#{userName},'%') AND
+		u.userRole=#{userRole} AND u.userRole=r.id
+	</select>
+	<select id="getUserListByUserName" resultType="User"
+		parameterType="string">
+		select * from smbms_user where userName like CONCAT
+		('%',#{userName},'%') and userRole=#{userRole}
+	</select>
+	<select id="getUserList" resultType="User" parameterType="Map">
+		select * from smbms_user where userName like CONCAT ('%',#{uName},'%')
+		and userRole=#{uRole}
+	</select>
+	<resultMap type="User" id="userList">
+		<result property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="phone" column="phone" />
+		<result property="birthday" column="birthday" />
+		<result property="gender" column="gender" />
+		<result property="userRole" column="userRole" />
+		<result property="userRoleName" column="roleName" />
+	</resultMap>
+</mapper>

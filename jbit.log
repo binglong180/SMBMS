@@ -1,0 +1,9 @@
+2017-12-18 16:19:02 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  2017-12-18 16:35:12 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  2017-12-18 16:35:32 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  2017-12-18 16:35:50 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  2017-12-18 16:36:24 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  2017-12-18 16:36:48 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  2017-12-18 16:37:02 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  2017-12-18 16:48:26 org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:115) LogFactory.java DEBUG-org.apache.ibatis.logging.LogFactory Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+  
