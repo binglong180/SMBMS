@@ -13,13 +13,20 @@ public class MyBatisUtil {
 	private static SqlSessionFactory factory;
 	static {
 		String resource = "mybatis-config.xml";
-		InputStream is;
+		InputStream is=null;
 		try {
 			is = Resources.getResourceAsStream(resource);
 			factory = new SqlSessionFactoryBuilder().build(is);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			try {
+				is.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 

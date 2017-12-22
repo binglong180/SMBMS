@@ -9,4 +9,5 @@ public interface UserMapper {
 	public List<User> getUserList();
 	public List<User> getUserListByUserName(User user);
 	public List<User> getUserListByMap(Map<String,String> userMap);
+	public List<User> getUserList(User User);
 }

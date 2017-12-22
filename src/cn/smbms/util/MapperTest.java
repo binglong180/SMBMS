@@ -179,4 +179,30 @@ public class MapperTest {
 			logger.debug(user.toString());
 		}
 	}
+	/**
+	 * 
+	 * resultMap得到数据结果！
+	 * 
+	 * @author 牛牛
+	 *
+	 * @date 2017-12-22
+	 *
+	 */
+	@Test
+	public void TestGetUserListResMap(){
+		sqlSession=MyBatisUtil.createSqlSession();
+		try {
+			User user=new User();
+			user.setUserName("赵");
+			user.setUserRole(3);
+			list=sqlSession.getMapper(UserMapper.class).getUserList(user);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally{
+			MyBatisUtil.closeSQLSession(sqlSession);
+		}
+		for (User user : list) {
+			logger.debug(user.toString()+user.getAge());
+		}
+	}
 }

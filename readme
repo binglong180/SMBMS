@@ -1,0 +1,23 @@
+SMBSM 2.0
+技术点：
+1、resultMap 进行结果的展示，其实resultType底层是调用的resultMap
+当简单查询时resultType就可以，当多表查询，比较复杂可以使用resultMap
+需要对resultMap进行配置
+<select id="getUserList" resultMap="userList"
+		parameterType="User">
+		SELECT u.*,r.roleName
+		FROM smbms_user u,smbms_role r
+		WHERE u.userName LIKE CONCAT('%',#{userName},'%') AND
+		u.userRole=#{userRole} AND u.userRole=r.id
+</select>
+<resultMap type="User" id="userList">
+		<result property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="phone" column="phone" />
+		<result property="birthday" column="birthday" />
+		<result property="gender" column="gender" />
+		<result property="userRole" column="userRole" />
+		<result property="userRoleName" column="roleName" />
+</resultMap>
+2、设置没有在resultMap映射中的不能获取

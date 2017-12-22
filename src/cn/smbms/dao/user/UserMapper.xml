@@ -5,28 +5,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="cn.smbms.dao.user.UserMapper">
 	<!-- 查询所有用户的记录数 -->
-	<select id="count" resultType="int">
+	<!-- <select id="count" resultType="int">
 		select * from smbms_user
-	</select>
+	</select> -->
 	<!-- <select id="getUserList" resultType="User">
 		select * from smbms_user
 	</select> -->
-	<select id="getUserListResultMap" resultMap="userList"
+	<select id="getUserList" resultMap="userList"
 		parameterType="User">
 		SELECT u.*,r.roleName
 		FROM smbms_user u,smbms_role r
 		WHERE u.userName LIKE CONCAT('%',#{userName},'%') AND
 		u.userRole=#{userRole} AND u.userRole=r.id
 	</select>
-	<select id="getUserListByUserName" resultType="User"
+	<!-- <select id="getUserListByUserName" resultType="User"
 		parameterType="string">
 		select * from smbms_user where userName like CONCAT
 		('%',#{userName},'%') and userRole=#{userRole}
-	</select>
-	<select id="getUserList" resultType="User" parameterType="Map">
+	</select> -->
+	<!-- <select id="getUserListByMap" resultType="User" parameterType="Map">
 		select * from smbms_user where userName like CONCAT ('%',#{uName},'%')
 		and userRole=#{uRole}
-	</select>
+	</select> -->
 	<resultMap type="User" id="userList">
 		<result property="id" column="id" />
 		<result property="userCode" column="userCode" />

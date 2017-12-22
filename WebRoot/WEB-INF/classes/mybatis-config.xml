@@ -16,6 +16,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<!-- 配置mybatis的log实现为LOG4J -->
 	<settings>
 		<setting name="logImpl" value="LOG4J" />
+		<!-- 设置resultMap级别为NONE（禁止自动匹配） -->
+		<setting name="autoMappingBehavior" value="NONE"/>
 	</settings>
 	<typeAliases>
 		<!-- <typeAlias alias="User" type="cn.smbms.bean.User"/> <typeAlias alias="provider" 
@@ -36,7 +38,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 			</dataSource>
 		</environment>
 	</environments>
-
 	<!-- 将mapper文件加入到配置文件中 -->
 	<mappers>
 		<mapper resource="cn/smbms/dao/user/UserMapper.xml" />
