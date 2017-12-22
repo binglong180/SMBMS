@@ -2,7 +2,7 @@ package cn.smbms.service.bill;
 
 import java.util.List;
 
-import cn.smbms.pojo.Bill;
+import cn.smbms.bean.Bill;
 
 public interface BillService {
 	/**

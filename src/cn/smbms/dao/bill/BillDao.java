@@ -3,7 +3,7 @@ package cn.smbms.dao.bill;
 import java.sql.Connection;
 import java.util.List;
 
-import cn.smbms.pojo.Bill;
+import cn.smbms.bean.Bill;
 
 public interface BillDao {
 	/**

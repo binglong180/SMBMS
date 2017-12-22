@@ -4,10 +4,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import cn.smbms.bean.Bill;
 import cn.smbms.dao.BaseDao;
 import cn.smbms.dao.bill.BillDao;
 import cn.smbms.dao.bill.BillDaoImpl;
-import cn.smbms.pojo.Bill;
 import cn.smbms.pojo.Provider;
 
 public class BillServiceImpl implements BillService {

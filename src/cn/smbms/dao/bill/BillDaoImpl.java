@@ -8,8 +8,8 @@ import java.util.List;
 
 import com.mysql.jdbc.StringUtils;
 
+import cn.smbms.bean.Bill;
 import cn.smbms.dao.BaseDao;
-import cn.smbms.pojo.Bill;
 import cn.smbms.pojo.Provider;
 
 public class BillDaoImpl implements BillDao {

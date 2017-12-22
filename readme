@@ -1,23 +1,34 @@
-SMBSM 2.0
+SMBMS 3.0
+更新 ：
+1、增加了使用resultMap展示BillList的方法
 技术点：
-1、resultMap 进行结果的展示，其实resultType底层是调用的resultMap
-当简单查询时resultType就可以，当多表查询，比较复杂可以使用resultMap
-需要对resultMap进行配置
-<select id="getUserList" resultMap="userList"
-		parameterType="User">
-		SELECT u.*,r.roleName
-		FROM smbms_user u,smbms_role r
-		WHERE u.userName LIKE CONCAT('%',#{userName},'%') AND
-		u.userRole=#{userRole} AND u.userRole=r.id
-</select>
-<resultMap type="User" id="userList">
-		<result property="id" column="id" />
-		<result property="userCode" column="userCode" />
-		<result property="userName" column="userName" />
-		<result property="phone" column="phone" />
-		<result property="birthday" column="birthday" />
-		<result property="gender" column="gender" />
-		<result property="userRole" column="userRole" />
-		<result property="userRoleName" column="roleName" />
-</resultMap>
-2、设置没有在resultMap映射中的不能获取
+1、增、删、改方法
+	<insert id="add" parameterType="User">
+		INSERT INTO
+		smbms_user(userCode,userName,userPassword,gender,birthday,phone,
+		address,userRole,createdBy,creationDate)
+		VALUE(#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},
+		#{address},#{userRole},#{createdBy},#{creationDate});
+	</insert>
+	<update id="change" parameterType="User">
+		UPDATE smbms_user
+		SET
+		userCode=#{userCode},
+		userName=#{userName},
+		userPassword=#{userPassword},gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},
+		userRole=#{userRole},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
+		WHERE id=#{id}
+	</update>
+2、多参数操作数据库
+public int updatePass(@Param("id")Integer id,@Param("userPassword")String userPassword);
+<update id="updatePass">
+		UPDATE smbms_user
+		SET
+		userPassword=#{userPassword}
+		WHERE id=#{id}
+</update>
+public int deleteUserById(@Param("id")Integer id)；
+<delete id="deleteUserById" parameterType="Integer">
+		delete from smbms_user
+		WHERE id=#{id}
+</delete>

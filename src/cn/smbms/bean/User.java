@@ -31,9 +31,8 @@ public class User {
 	private Date creationDate;// 创建时间
 	private Integer modifyBy;// 更新者（userId）
 	private Date modifyDate;// 更新时间
-	private String userRoleName;// 角色名
+	//private String userRoleName;// 角色名
 	private int age;
-
 	public int getAge() {
 		setAge(getBirthday());
 		return age;
@@ -71,13 +70,13 @@ public class User {
 		this.age = getAge(date);
 	}
 
-	public String getUserRoleName() {
-		return userRoleName;
-	}
+	// public String getUserRoleName() {
+	// return userRoleName;
+	// }
 
-	public void setUserRoleName(String userRoleName) {
-		this.userRoleName = userRoleName;
-	}
+//	public void setUserRoleName(String userRoleName) {
+//		this.userRoleName = userRoleName;
+//	}
 
 	public User() {
 		super();

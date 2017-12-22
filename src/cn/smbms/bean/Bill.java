@@ -1,4 +1,4 @@
-package cn.smbms.pojo;
+package cn.smbms.bean;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,10 +17,16 @@ public class Bill {
 	private Date creationDate; //创建时间
 	private Integer modifyBy; //更新者
 	private Date modifyDate;//更新时间
-	
 	private String providerName;//供应商名称
 	
-	
+	public String getIsisPaymentStates(Integer isPayment){
+		if(isPayment==2){
+			return "已付款";
+		}else if(isPayment==1){
+			return "未付款";
+		}
+		return "数据更新中！";
+	}
 	public String getProviderName() {
 		return providerName;
 	}

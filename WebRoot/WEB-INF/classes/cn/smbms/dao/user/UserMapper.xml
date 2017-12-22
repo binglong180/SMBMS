@@ -5,28 +5,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="cn.smbms.dao.user.UserMapper">
 	<!-- 查询所有用户的记录数 -->
-	<!-- <select id="count" resultType="int">
-		select * from smbms_user
-	</select> -->
-	<!-- <select id="getUserList" resultType="User">
-		select * from smbms_user
-	</select> -->
-	<select id="getUserList" resultMap="userList"
-		parameterType="User">
+	<!-- <select id="count" resultType="int"> select * from smbms_user </select> -->
+	<!-- <select id="getUserList" resultType="User"> select * from smbms_user 
+		</select> -->
+	<select id="getUserList" resultMap="userList" parameterType="User">
 		SELECT u.*,r.roleName
 		FROM smbms_user u,smbms_role r
-		WHERE u.userName LIKE CONCAT('%',#{userName},'%') AND
-		u.userRole=#{userRole} AND u.userRole=r.id
+		WHERE u.userName
+		LIKE CONCAT('%',#{userName},'%') AND
+		u.userRole=#{userRole} AND
+		u.userRole=r.id
 	</select>
-	<!-- <select id="getUserListByUserName" resultType="User"
-		parameterType="string">
-		select * from smbms_user where userName like CONCAT
-		('%',#{userName},'%') and userRole=#{userRole}
-	</select> -->
-	<!-- <select id="getUserListByMap" resultType="User" parameterType="Map">
-		select * from smbms_user where userName like CONCAT ('%',#{uName},'%')
-		and userRole=#{uRole}
-	</select> -->
+	<insert id="add" parameterType="User">
+		INSERT INTO
+		smbms_user(userCode,userName,userPassword,gender,birthday,phone,
+		address,userRole,createdBy,creationDate)
+		VALUE(#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},
+		#{address},#{userRole},#{createdBy},#{creationDate});
+	</insert>
+	<update id="change" parameterType="User">
+		UPDATE smbms_user
+		SET
+		userCode=#{userCode},
+		userName=#{userName},
+		userPassword=#{userPassword},gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},
+		userRole=#{userRole},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
+		WHERE id=#{id}
+	</update>
+	<update id="updatePass">
+		UPDATE smbms_user
+		SET
+		userPassword=#{userPassword}
+		WHERE id=#{id}
+	</update>
+	<delete id="deleteUserById" parameterType="Integer">
+		delete from smbms_user
+		WHERE id=#{id}
+	</delete>
+	<!-- <select id="getUserListByUserName" resultType="User" parameterType="string"> 
+		select * from smbms_user where userName like CONCAT ('%',#{userName},'%') 
+		and userRole=#{userRole} </select> -->
+	<!-- <select id="getUserListByMap" resultType="User" parameterType="Map"> 
+		select * from smbms_user where userName like CONCAT ('%',#{uName},'%') and 
+		userRole=#{uRole} </select> -->
 	<resultMap type="User" id="userList">
 		<result property="id" column="id" />
 		<result property="userCode" column="userCode" />

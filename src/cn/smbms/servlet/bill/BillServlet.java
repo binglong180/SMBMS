@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSONArray;
 import com.mysql.jdbc.StringUtils;
 
-import cn.smbms.pojo.Bill;
+import cn.smbms.bean.Bill;
 import cn.smbms.pojo.Provider;
 import cn.smbms.pojo.User;
 import cn.smbms.service.bill.BillService;

@@ -2,7 +2,11 @@ package cn.smbms.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +29,8 @@ public class MapperTest {
 	InputStream is = null;
 	SqlSession sqlSession = null;
 	static List<User> list = new ArrayList<User>();
-	static Map<String,String> userMap=new HashMap<String, String>();
+	static Map<String, String> userMap = new HashMap<String, String>();
+
 	@Test
 	public void testMapper() {
 		try {
@@ -150,10 +155,12 @@ public class MapperTest {
 			User user = new User();
 			user.setUserName("赵");
 			user.setUserRole(3);
-			//用指定URL的方式进行数据库的操作
-			//list = sqlSession.selectList("cn.smbms.dao.user.UserMapper.getUserListByUserName",user);
-			//使用Mapper接口对数据库进行操作
-			list=sqlSession.getMapper(UserMapper.class).getUserListByUserName(user);
+			// 用指定URL的方式进行数据库的操作
+			// list =
+			// sqlSession.selectList("cn.smbms.dao.user.UserMapper.getUserListByUserName",user);
+			// 使用Mapper接口对数据库进行操作
+			list = sqlSession.getMapper(UserMapper.class)
+					.getUserListByUserName(user);
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
@@ -165,13 +172,15 @@ public class MapperTest {
 		}
 
 	}
+
 	@Test
-	public void testGetUserListByMap(){
-		sqlSession=MyBatisUtil.createSqlSession();
+	public void testGetUserListByMap() {
+		sqlSession = MyBatisUtil.createSqlSession();
 		userMap.put("uName", "赵");
 		userMap.put("uRole", "3");
 		try {
-			list=sqlSession.getMapper(UserMapper.class).getUserListByMap(userMap);
+			list = sqlSession.getMapper(UserMapper.class).getUserListByMap(
+					userMap);
 		} catch (Exception e) {
 			MyBatisUtil.closeSQLSession(sqlSession);
 		}
@@ -179,30 +188,132 @@ public class MapperTest {
 			logger.debug(user.toString());
 		}
 	}
+
 	/**
 	 * 
 	 * resultMap得到数据结果！
 	 * 
 	 * @author 牛牛
-	 *
+	 * 
 	 * @date 2017-12-22
-	 *
+	 * 
 	 */
 	@Test
-	public void TestGetUserListResMap(){
-		sqlSession=MyBatisUtil.createSqlSession();
+	public void TestGetUserListResMap() {
+		sqlSession = MyBatisUtil.createSqlSession();
 		try {
-			User user=new User();
+			User user = new User();
 			user.setUserName("赵");
 			user.setUserRole(3);
-			list=sqlSession.getMapper(UserMapper.class).getUserList(user);
+			list = sqlSession.getMapper(UserMapper.class).getUserList(user);
 		} catch (Exception e) {
 			// TODO: handle exception
-		}finally{
+		} finally {
 			MyBatisUtil.closeSQLSession(sqlSession);
 		}
 		for (User user : list) {
-			logger.debug(user.toString()+user.getAge());
+			logger.debug(user.toString() + user.getAge());
+		}
+	}
+
+	@Test
+	public void testAdd() {
+		sqlSession = MyBatisUtil.createSqlSession();
+		int count = 0;
+		try {
+			User user = new User();
+			user.setId(18);
+			user.setUserName("测试用户");
+			user.setUserCode("ceshi");
+			user.setUserPassword("123456");
+			user.setGender(1);
+			user.setBirthday(new SimpleDateFormat("yyyy-MM-dd")
+					.parse("2017-11-12"));
+			user.setPhone("11111111111");
+			user.setAddress("测试地址");
+			user.setUserRole(2);
+			user.setCreatedBy(1);
+			user.setCreationDate(new Date());
+			count = sqlSession.getMapper(UserMapper.class).add(user);
+			// int i=2/0;
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			count = 0;
+		} finally {
+			MyBatisUtil.closeSQLSession(sqlSession);
+		}
+		logger.debug(count);
+	}
+
+	@Test
+	public void testChange() {
+
+		int count = 0;
+		try {
+			User user = new User();
+			user.setId(18);
+			user.setUserName("跟新用户");
+			user.setUserCode("ceshi");
+			user.setUserPassword("123456");
+			user.setGender(1);
+			user.setBirthday(new SimpleDateFormat("yyyy-MM-dd")
+					.parse("2017-11-12"));
+			user.setPhone("11111111111");
+			user.setAddress("更新地址");
+			user.setUserRole(2);
+			user.setModifyDate(new Date());
+			user.setModifyBy(1);
+			sqlSession = MyBatisUtil.createSqlSession();
+			count = sqlSession.getMapper(UserMapper.class).change(user);
+			// int i=2/0;
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			sqlSession.rollback();
+			count = 0;
+		} finally {
+			MyBatisUtil.closeSQLSession(sqlSession);
+		}
+		logger.debug(count);
+	}
+
+	@Test
+	public void TestUpdatePass() {
+		sqlSession = MyBatisUtil.createSqlSession();
+		try {
+			int count = sqlSession.getMapper(UserMapper.class).updatePass(18,
+					"8888");
+			sqlSession.commit();
+			if (count > 0) {
+				logger.debug("更改成功");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			sqlSession.rollback();
+			e.getStackTrace();
+		} finally {
+			MyBatisUtil.closeSQLSession(sqlSession);
+		}
+	}
+
+	@Test
+	public void TestDeleteUserById() {
+		sqlSession = MyBatisUtil.createSqlSession();
+		int count = 0;
+		try {
+			count = sqlSession.getMapper(UserMapper.class).deleteUserById(19);
+			sqlSession.commit();
+		} catch (Exception e) {
+			e.getStackTrace();
+			sqlSession.rollback();
+			count = 0;
+		}
+		if (count > 0) {
+			logger.debug("删除成功");
+		} else {
+			logger.debug("删除失败");
 		}
 	}
 }
