@@ -2,7 +2,8 @@ package cn.smbms.dao.role;
 
 import java.sql.Connection;
 import java.util.List;
-import cn.smbms.pojo.Role;
+
+import cn.smbms.bean.Role;
 
 public interface RoleDao {
 	

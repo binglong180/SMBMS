@@ -58,4 +58,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="userRole" column="userRole" />
 		<result property="userRoleName" column="roleName" />
 	</resultMap>
+	<resultMap type="User" id="userRoleResult">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="userRole" column="userRole" />
+		<association property="role" javaType="Role" resultMap="rloeList"></association>
+	</resultMap>
+	<resultMap type="Role" id="rloeList">
+		<id property="id" column="rid" />
+		<result property="roleCode" column="roleCode" />
+		<result property="roleName" column="roleName" />
+	</resultMap>
+	<select id="getUserByUserRole" parameterType="Integer"
+		resultMap="userRoleResult">
+		SELECT
+		u.id,u.userName,r.roleName,r.id as
+		rid,r.roleCode,u.userRole
+		FROM smbms_user u,smbms_role r
+		WHERE
+		u.userRole=r.id AND u.userRole=#{userRole}
+	</select>
 </mapper>
+
+
+
+
+

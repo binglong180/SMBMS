@@ -1,4 +1,4 @@
-package cn.smbms.pojo;
+package cn.smbms.bean;
 
 import java.util.Date;
 

@@ -1,34 +1,51 @@
-SMBMS 3.0
-更新 ：
-1、增加了使用resultMap展示BillList的方法
+SMBMS 4.0
 技术点：
-1、增、删、改方法
-	<insert id="add" parameterType="User">
-		INSERT INTO
-		smbms_user(userCode,userName,userPassword,gender,birthday,phone,
-		address,userRole,createdBy,creationDate)
-		VALUE(#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},
-		#{address},#{userRole},#{createdBy},#{creationDate});
-	</insert>
-	<update id="change" parameterType="User">
-		UPDATE smbms_user
-		SET
-		userCode=#{userCode},
-		userName=#{userName},
-		userPassword=#{userPassword},gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},
-		userRole=#{userRole},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
-		WHERE id=#{id}
-	</update>
-2、多参数操作数据库
-public int updatePass(@Param("id")Integer id,@Param("userPassword")String userPassword);
-<update id="updatePass">
-		UPDATE smbms_user
-		SET
-		userPassword=#{userPassword}
-		WHERE id=#{id}
-</update>
-public int deleteUserById(@Param("id")Integer id)；
-<delete id="deleteUserById" parameterType="Integer">
-		delete from smbms_user
-		WHERE id=#{id}
-</delete>
+1、使用resultMap进行高级查询（association）
+<resultMap type="User" id="userRoleResult">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="userRole" column="userRole" />
+		<association property="role" javaType="Role">
+			<id property="id" column="rid" />
+			<result property="roleCode" column="roleCode" />
+			<result property="roleName" column="roleName" />
+		</association>
+</resultMap>
+<select id="getUserByUserRole" parameterType="Integer" resultMap="userRoleResult">
+		SELECT
+		u.id,u.userName,r.roleName,r.id as rid,r.roleCode,u.userRole
+		FROM smbms_user u,smbms_role r
+		WHERE  u.userRole=r.id AND u.userRole=#{userRole}
+</select>
+
+resultMap 的属性不变
+association 的属性property javaType 对应User中Role对象属性
+
+2、代码重用(就是分表查询用association通过resultMap，id来关联)
+<resultMap type="User" id="userRoleResult">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<result property="userRole" column="userRole" />
+		<association property="role" javaType="Role" resultMap="rloeList"></association>
+</resultMap>
+<resultMap type="Role" id="rloeList">
+		<id property="id" column="rid" />
+		<result property="roleCode" column="roleCode" />
+		<result property="roleName" column="roleName" />
+</resultMap>
+<select id="getUserByUserRole" parameterType="Integer" resultMap="userRoleResult">
+		SELECT
+		u.id,u.userName,r.roleName,r.id as rid,r.roleCode,u.userRole
+		FROM smbms_user u,smbms_role r
+		WHERE  u.userRole=r.id AND u.userRole=#{userRole}
+</select>
+注意点：
+1、表中的字段名一致时要取别名
+2、resultMap中用到的字段要查出来，尤其是id，否则将得不到结果
+3、id对应数据库中的主键
+
+
+
+

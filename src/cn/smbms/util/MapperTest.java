@@ -316,4 +316,13 @@ public class MapperTest {
 			logger.debug("删除失败");
 		}
 	}
+	@Test
+	public void TestGetUserListByUserRole() {
+		sqlSession = MyBatisUtil.createSqlSession();
+		list = sqlSession.getMapper(UserMapper.class).getUserByUserRole(3);
+		MyBatisUtil.closeSQLSession(sqlSession);
+		for (User user : list) {
+			logger.debug(user.getUserName()+""+user.getRole().getRoleName()+user.getUserRole());
+		}
+	}
 }

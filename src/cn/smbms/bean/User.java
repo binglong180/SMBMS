@@ -33,6 +33,15 @@ public class User {
 	private Date modifyDate;// 更新时间
 	//private String userRoleName;// 角色名
 	private int age;
+	private Role role;
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	public int getAge() {
 		setAge(getBirthday());
 		return age;

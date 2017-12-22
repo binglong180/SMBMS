@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSONArray;
 import com.mysql.jdbc.StringUtils;
 
-import cn.smbms.pojo.Role;
+import cn.smbms.bean.Role;
 import cn.smbms.pojo.User;
 import cn.smbms.service.role.RoleService;
 import cn.smbms.service.role.RoleServiceImpl;

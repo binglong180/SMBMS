@@ -3,10 +3,10 @@ package cn.smbms.service.role;
 import java.sql.Connection;
 import java.util.List;
 
+import cn.smbms.bean.Role;
 import cn.smbms.dao.BaseDao;
 import cn.smbms.dao.role.RoleDao;
 import cn.smbms.dao.role.RoleDaoImpl;
-import cn.smbms.pojo.Role;
 
 public class RoleServiceImpl implements RoleService{
 	

@@ -16,4 +16,5 @@ public interface UserMapper {
 	public int change(User user);
 	public int updatePass(@Param("id")Integer id,@Param("userPassword")String userPassword);
 	public int deleteUserById(@Param("id")Integer id);
+	public List<User> getUserByUserRole(@Param("userRole")Integer userRole);
 }

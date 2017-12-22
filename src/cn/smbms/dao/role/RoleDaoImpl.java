@@ -5,8 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import cn.smbms.bean.Role;
 import cn.smbms.dao.BaseDao;
-import cn.smbms.pojo.Role;
 
 public class RoleDaoImpl implements RoleDao{
 
