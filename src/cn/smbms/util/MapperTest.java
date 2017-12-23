@@ -153,21 +153,18 @@ public class MapperTest {
 	public void testGetUserListByUserName() {
 		sqlSession = MyBatisUtil.createSqlSession();
 		try {
-			User user = new User();
-			user.setUserName("赵");
-			user.setUserRole(3);
 			// 用指定URL的方式进行数据库的操作
 			// list =
 			// sqlSession.selectList("cn.smbms.dao.user.UserMapper.getUserListByUserName",user);
 			// 使用Mapper接口对数据库进行操作
 			list = sqlSession.getMapper(UserMapper.class)
-					.getUserListByUserName(user);
+					.getUserListByUserName("孙", 3);
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
 			MyBatisUtil.closeSQLSession(sqlSession);
 		}
-
+		logger.debug(list.size());
 		for (User user : list) {
 			logger.debug(user.toString());
 		}
@@ -254,16 +251,9 @@ public class MapperTest {
 		int count = 0;
 		try {
 			User user = new User();
-			user.setId(18);
-			user.setUserName("跟新用户");
-			user.setUserCode("ceshi");
-			user.setUserPassword("123456");
-			user.setGender(1);
-			user.setBirthday(new SimpleDateFormat("yyyy-MM-dd")
-					.parse("2017-11-12"));
-			user.setPhone("11111111111");
-			user.setAddress("更新地址");
-			user.setUserRole(2);
+			user.setId(20);
+			user.setUserName("测试修改用户");
+			user.setAddress("测试修改地址");
 			user.setModifyDate(new Date());
 			user.setModifyBy(1);
 			sqlSession = MyBatisUtil.createSqlSession();
@@ -317,25 +307,40 @@ public class MapperTest {
 			logger.debug("删除失败");
 		}
 	}
+
 	@Test
 	public void TestGetUserListByUserRole() {
 		sqlSession = MyBatisUtil.createSqlSession();
 		list = sqlSession.getMapper(UserMapper.class).getUserByUserRole(3);
 		MyBatisUtil.closeSQLSession(sqlSession);
 		for (User user : list) {
-			logger.debug(user.getUserName()+""+user.getRole().getRoleName()+user.getUserRole());
+			logger.debug(user.getUserName() + "" + user.getRole().getRoleName()
+					+ user.getUserRole());
+		}
+	}
+
+	@Test
+	public void TestGetAddressByUserId() {
+		sqlSession = MyBatisUtil.createSqlSession();
+		list = sqlSession.getMapper(UserMapper.class).getUserAddressList(1);
+		MyBatisUtil.closeSQLSession(sqlSession);
+		for (User user : list) {
+			for (Address address : user.getAddresslist()) {
+				logger.debug(user.getUserName() + address.getAddressDesc()
+						+ address.getTel() + address.getContact());
+			}
+
 		}
 	}
 	@Test
-	public void TestGetAddressByUserId(){
-		sqlSession=MyBatisUtil.createSqlSession();
-		list=sqlSession.getMapper(UserMapper.class).getUserAddressList(1);
+	public void TestGetUserListByRoleIdArray() {
+		Integer[] roleIds = { 2, 3 };
+		sqlSession = MyBatisUtil.createSqlSession();
+		list = sqlSession.getMapper(UserMapper.class)
+				.getUserByRoleId_foreach_array(roleIds);
 		MyBatisUtil.closeSQLSession(sqlSession);
 		for (User user : list) {
-			for (Address address :user.getAddresslist()) {
-				logger.debug(user.getUserName()+address.getAddressDesc()+address.getTel()+address.getContact());
-			}
-			
+			logger.debug(user.toString());
 		}
 	}
 }

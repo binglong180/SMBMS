@@ -1,6 +1,77 @@
-SMBMS 6.0
+SMBMS 7.0
 技术点：
-1、resultMap自动匹配级别aotoMappingBehavior
-	a、NONE禁止自动匹配
-	b、PARTIAL（默认模式）自动匹配所有，除内部嵌套（association，collection）
-	c、FULL自动匹配所有
+动态sql拼接
+1、if
+	<select id="getUserListByUserName" resultMap="userList">
+		select * from smbms_user where
+		
+			<if test="userRole!=null">
+				and userRole=#{userRole}
+			</if>
+			<if test="userName!=null and userName!=''">
+				and userName like CONCAT ('%',#{userName},'%')
+			</if>
+
+</select>
+2、where 处理where拼接错误
+<select id="getUserListByUserName" resultMap="userList">
+		select * from smbms_user
+		<where>
+			<if test="userRole!=null">
+				and userRole=#{userRole}
+			</if>
+			<if test="userName!=null and userName!=''">
+				and userName like CONCAT ('%',#{userName},'%')
+			</if>
+		</where>
+</select>
+3、trim处理where拼接错误
+<select id="getUserListByUserName" resultMap="userList">
+		select * from smbms_user
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="userRole!=null">
+				and userRole=#{userRole}
+			</if>
+			<if test="userName!=null and userName!=''">
+				and userName like CONCAT ('%',#{userName},'%')
+			</if>
+		</trim>
+</select>
+4、if+set动态更新数据
+<update id="change" parameterType="User">
+		UPDATE smbms_user
+		<set>
+			<if test="userCode!=null and userCode!=''">userCode=#{userCode},</if>
+			<if test="userName!=null and userName!=''">userName=#{userName},</if>
+			<if test="userPassword!=null and userPassword!=''">userPassword=#{userPassword},</if>
+			<if test="gender!=null and gender!=''">gender=#{gender},</if>
+			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
+			<if test="phone!=null and phone!=''">phone=#{phone},</if>
+			<if test="address!=null and address!=''">address=#{address},</if>
+			<if test="userRole!=null and userRole!=''">userRole=#{userRole},</if>
+			<if test="modifyBy!=null and modifyBy!=''">modifyBy=#{modifyBy},</if>
+			<if test="modifyDate!=null and modifyDate!=''">modifyDate=#{modifyDate},</if>
+		</set>
+		WHERE id=#{id}
+</update>
+5、Mybaties参数为数组使用foreach遍历
+<select id="getUserByRoleId_foreach_array" resultMap="userMapByRole">
+		select * from smbms_user where userRole in
+		<foreach collection="array" item="roleIds" open="(" separator=","
+			close=")">#{roleIds}</foreach>
+</select>
+<resultMap type="User" id="userMapByRole">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+</resultMap>
+接口：
+public List<User> getUserByRoleId_foreach_array(Integer [] roleIds);
+
+
+
+
+
+
+
+

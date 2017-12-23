@@ -25,11 +25,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</insert>
 	<update id="change" parameterType="User">
 		UPDATE smbms_user
-		SET
-		userCode=#{userCode},
-		userName=#{userName},
-		userPassword=#{userPassword},gender=#{gender},birthday=#{birthday},phone=#{phone},address=#{address},
-		userRole=#{userRole},modifyBy=#{modifyBy},modifyDate=#{modifyDate}
+		<set>
+			<if test="userCode!=null and userCode!=''">userCode=#{userCode},</if>
+			<if test="userName!=null and userName!=''">userName=#{userName},</if>
+			<if test="userPassword!=null and userPassword!=''">userPassword=#{userPassword},</if>
+			<if test="gender!=null and gender!=''">gender=#{gender},</if>
+			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
+			<if test="phone!=null and phone!=''">phone=#{phone},</if>
+			<if test="address!=null and address!=''">address=#{address},</if>
+			<if test="userRole!=null and userRole!=''">userRole=#{userRole},</if>
+			<if test="modifyBy!=null and modifyBy!=''">modifyBy=#{modifyBy},</if>
+			<if test="modifyDate!=null and modifyDate!=''">modifyDate=#{modifyDate},</if>
+		</set>
 		WHERE id=#{id}
 	</update>
 	<update id="updatePass">
@@ -42,9 +49,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		delete from smbms_user
 		WHERE id=#{id}
 	</delete>
-	<!-- <select id="getUserListByUserName" resultType="User" parameterType="string"> 
-		select * from smbms_user where userName like CONCAT ('%',#{userName},'%') 
-		and userRole=#{userRole} </select> -->
+	<select id="getUserListByUserName" resultMap="userList">
+		select * from smbms_user
+		<trim prefix="where" prefixOverrides="and|or">
+			<if test="userRole!=null">
+				and userRole=#{userRole}
+			</if>
+			<if test="userName!=null and userName!=''">
+				and userName like CONCAT ('%',#{userName},'%')
+			</if>
+		</trim>
+	</select>
 	<!-- <select id="getUserListByMap" resultType="User" parameterType="Map"> 
 		select * from smbms_user where userName like CONCAT ('%',#{uName},'%') and 
 		userRole=#{uRole} </select> -->
@@ -83,7 +98,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<id property="id" column="id" />
 		<result property="userCode" column="userCode" />
 		<result property="userName" column="userName" />
-		<collection property="addresslist" ofType="Address" resultMap="addressList"></collection>
+		<collection property="addresslist" ofType="Address"
+			resultMap="addressList"></collection>
 	</resultMap>
 	<resultMap type="Address" id="addressList">
 		<id property="id" column="a_id" />
@@ -99,6 +115,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM smbms_user u,smbms_address a
 		WHERE a.userId=#{id} AND u.id=a.userId
 	</select>
+	<select id="getUserByRoleId_foreach_array" resultMap="userMapByRole">
+		select * from smbms_user where userRole in
+		<foreach collection="array" item="roleIds" open="(" separator=","
+			close=")">#{roleIds}</foreach>
+	</select>
+	<resultMap type="User" id="userMapByRole">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+	</resultMap>
 </mapper>
 
 
