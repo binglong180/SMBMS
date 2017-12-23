@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -32,6 +33,15 @@ public class User {
 	private Integer modifyBy;// 更新者（userId）
 	private Date modifyDate;// 更新时间
 	//private String userRoleName;// 角色名
+	private List<Address> addresslist;
+	public List<Address> getAddresslist() {
+		return addresslist;
+	}
+
+	public void setAddresslist(List<Address> addresslist) {
+		this.addresslist = addresslist;
+	}
+
 	private int age;
 	private Role role;
 	public Role getRole() {

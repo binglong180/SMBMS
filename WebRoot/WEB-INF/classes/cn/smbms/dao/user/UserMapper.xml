@@ -79,6 +79,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE
 		u.userRole=r.id AND u.userRole=#{userRole}
 	</select>
+	<resultMap type="User" id="userAddressList">
+		<id property="id" column="id" />
+		<result property="userCode" column="userCode" />
+		<result property="userName" column="userName" />
+		<collection property="addresslist" ofType="Address" resultMap="addressList"></collection>
+	</resultMap>
+	<resultMap type="Address" id="addressList">
+		<id property="id" column="a_id" />
+		<result property="contact" column="contact" />
+		<result property="addressDesc" column="addressDesc" />
+		<result property="tel" column="tel" />
+		<result property="userId" column="userId" />
+	</resultMap>
+	<select id="getUserAddressList" parameterType="Integer"
+		resultMap="userAddressList">
+		SELECT u.userName,u.id,a.id AS
+		a_id,a.addressDesc,a.tel,a.contact
+		FROM smbms_user u,smbms_address a
+		WHERE a.userId=#{id} AND u.id=a.userId
+	</select>
 </mapper>
 
 

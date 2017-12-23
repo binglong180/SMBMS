@@ -18,6 +18,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 
+import cn.smbms.bean.Address;
 import cn.smbms.bean.Provider;
 import cn.smbms.bean.User;
 import cn.smbms.dao.provider.ProviderMapper;
@@ -323,6 +324,18 @@ public class MapperTest {
 		MyBatisUtil.closeSQLSession(sqlSession);
 		for (User user : list) {
 			logger.debug(user.getUserName()+""+user.getRole().getRoleName()+user.getUserRole());
+		}
+	}
+	@Test
+	public void TestGetAddressByUserId(){
+		sqlSession=MyBatisUtil.createSqlSession();
+		list=sqlSession.getMapper(UserMapper.class).getUserAddressList(1);
+		MyBatisUtil.closeSQLSession(sqlSession);
+		for (User user : list) {
+			for (Address address :user.getAddresslist()) {
+				logger.debug(user.getUserName()+address.getAddressDesc()+address.getTel()+address.getContact());
+			}
+			
 		}
 	}
 }

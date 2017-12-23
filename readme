@@ -1,51 +1,46 @@
-SMBMS 4.0
+SMBMS 5.0
 技术点：
-1、使用resultMap进行高级查询（association）
-<resultMap type="User" id="userRoleResult">
+1、resultMap高级查询（collection）
+与association原理相似只是collection得到的是一个结果集而association得到的是一个对象！
+具体配置如下
+<resultMap type="User" id="userAddressList">
 		<id property="id" column="id" />
 		<result property="userCode" column="userCode" />
 		<result property="userName" column="userName" />
-		<result property="userRole" column="userRole" />
-		<association property="role" javaType="Role">
-			<id property="id" column="rid" />
-			<result property="roleCode" column="roleCode" />
-			<result property="roleName" column="roleName" />
-		</association>
+		<collection property="addresslist" ofType="Address">
+			<id property="id" column="a_id" />
+			<result property="contact" column="contact" />
+			<result property="addressDesc" column="addressDesc" />
+			<result property="tel" column="tel" />
+			<result property="userId" column="userId" />
+		</collection>
 </resultMap>
-<select id="getUserByUserRole" parameterType="Integer" resultMap="userRoleResult">
-		SELECT
-		u.id,u.userName,r.roleName,r.id as rid,r.roleCode,u.userRole
-		FROM smbms_user u,smbms_role r
-		WHERE  u.userRole=r.id AND u.userRole=#{userRole}
+<select id="getUserAddressList" parameterType="Integer"
+		resultMap="userAddressList">
+		SELECT u.userName,u.id,a.id AS a_id,a.addressDesc,a.tel,a.contact
+		FROM smbms_user u,smbms_address a
+		WHERE a.userId=#{id} AND u.id=a.userId
 </select>
-
-resultMap 的属性不变
-association 的属性property javaType 对应User中Role对象属性
-
-2、代码重用(就是分表查询用association通过resultMap，id来关联)
-<resultMap type="User" id="userRoleResult">
+2、collection代码重用
+<resultMap type="User" id="userAddressList">
 		<id property="id" column="id" />
 		<result property="userCode" column="userCode" />
 		<result property="userName" column="userName" />
-		<result property="userRole" column="userRole" />
-		<association property="role" javaType="Role" resultMap="rloeList"></association>
+		<collection property="addresslist" ofType="Address" resultMap="addressList"></collection>
 </resultMap>
-<resultMap type="Role" id="rloeList">
-		<id property="id" column="rid" />
-		<result property="roleCode" column="roleCode" />
-		<result property="roleName" column="roleName" />
+<resultMap type="Address" id="addressList">
+		<id property="id" column="a_id" />
+		<result property="contact" column="contact" />
+		<result property="addressDesc" column="addressDesc" />
+		<result property="tel" column="tel" />
+		<result property="userId" column="userId" />
 </resultMap>
-<select id="getUserByUserRole" parameterType="Integer" resultMap="userRoleResult">
-		SELECT
-		u.id,u.userName,r.roleName,r.id as rid,r.roleCode,u.userRole
-		FROM smbms_user u,smbms_role r
-		WHERE  u.userRole=r.id AND u.userRole=#{userRole}
+<select id="getUserAddressList" parameterType="Integer"
+		resultMap="userAddressList">
+		SELECT u.userName,u.id,a.id AS
+		a_id,a.addressDesc,a.tel,a.contact
+		FROM smbms_user u,smbms_address a
+		WHERE a.userId=#{id} AND u.id=a.userId
 </select>
-注意点：
-1、表中的字段名一致时要取别名
-2、resultMap中用到的字段要查出来，尤其是id，否则将得不到结果
-3、id对应数据库中的主键
-
-
 
 
