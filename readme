@@ -1,46 +1,6 @@
-SMBMS 5.0
+SMBMS 6.0
 技术点：
-1、resultMap高级查询（collection）
-与association原理相似只是collection得到的是一个结果集而association得到的是一个对象！
-具体配置如下
-<resultMap type="User" id="userAddressList">
-		<id property="id" column="id" />
-		<result property="userCode" column="userCode" />
-		<result property="userName" column="userName" />
-		<collection property="addresslist" ofType="Address">
-			<id property="id" column="a_id" />
-			<result property="contact" column="contact" />
-			<result property="addressDesc" column="addressDesc" />
-			<result property="tel" column="tel" />
-			<result property="userId" column="userId" />
-		</collection>
-</resultMap>
-<select id="getUserAddressList" parameterType="Integer"
-		resultMap="userAddressList">
-		SELECT u.userName,u.id,a.id AS a_id,a.addressDesc,a.tel,a.contact
-		FROM smbms_user u,smbms_address a
-		WHERE a.userId=#{id} AND u.id=a.userId
-</select>
-2、collection代码重用
-<resultMap type="User" id="userAddressList">
-		<id property="id" column="id" />
-		<result property="userCode" column="userCode" />
-		<result property="userName" column="userName" />
-		<collection property="addresslist" ofType="Address" resultMap="addressList"></collection>
-</resultMap>
-<resultMap type="Address" id="addressList">
-		<id property="id" column="a_id" />
-		<result property="contact" column="contact" />
-		<result property="addressDesc" column="addressDesc" />
-		<result property="tel" column="tel" />
-		<result property="userId" column="userId" />
-</resultMap>
-<select id="getUserAddressList" parameterType="Integer"
-		resultMap="userAddressList">
-		SELECT u.userName,u.id,a.id AS
-		a_id,a.addressDesc,a.tel,a.contact
-		FROM smbms_user u,smbms_address a
-		WHERE a.userId=#{id} AND u.id=a.userId
-</select>
-
-
+1、resultMap自动匹配级别aotoMappingBehavior
+	a、NONE禁止自动匹配
+	b、PARTIAL（默认模式）自动匹配所有，除内部嵌套（association，collection）
+	c、FULL自动匹配所有
