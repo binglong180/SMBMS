@@ -1,75 +1,32 @@
-SMBMS 7.0
+SMBMS 8.0
 技术点：
-动态sql拼接
-1、if
-	<select id="getUserListByUserName" resultMap="userList">
-		select * from smbms_user where
-		
-			<if test="userRole!=null">
-				and userRole=#{userRole}
-			</if>
-			<if test="userName!=null and userName!=''">
-				and userName like CONCAT ('%',#{userName},'%')
-			</if>
-
-</select>
-2、where 处理where拼接错误
-<select id="getUserListByUserName" resultMap="userList">
-		select * from smbms_user
-		<where>
-			<if test="userRole!=null">
-				and userRole=#{userRole}
-			</if>
-			<if test="userName!=null and userName!=''">
-				and userName like CONCAT ('%',#{userName},'%')
-			</if>
-		</where>
-</select>
-3、trim处理where拼接错误
-<select id="getUserListByUserName" resultMap="userList">
-		select * from smbms_user
-		<trim prefix="where" prefixOverrides="and|or">
-			<if test="userRole!=null">
-				and userRole=#{userRole}
-			</if>
-			<if test="userName!=null and userName!=''">
-				and userName like CONCAT ('%',#{userName},'%')
-			</if>
-		</trim>
-</select>
-4、if+set动态更新数据
-<update id="change" parameterType="User">
-		UPDATE smbms_user
-		<set>
-			<if test="userCode!=null and userCode!=''">userCode=#{userCode},</if>
-			<if test="userName!=null and userName!=''">userName=#{userName},</if>
-			<if test="userPassword!=null and userPassword!=''">userPassword=#{userPassword},</if>
-			<if test="gender!=null and gender!=''">gender=#{gender},</if>
-			<if test="birthday!=null and birthday!=''">birthday=#{birthday},</if>
-			<if test="phone!=null and phone!=''">phone=#{phone},</if>
-			<if test="address!=null and address!=''">address=#{address},</if>
-			<if test="userRole!=null and userRole!=''">userRole=#{userRole},</if>
-			<if test="modifyBy!=null and modifyBy!=''">modifyBy=#{modifyBy},</if>
-			<if test="modifyDate!=null and modifyDate!=''">modifyDate=#{modifyDate},</if>
-		</set>
-		WHERE id=#{id}
-</update>
-5、Mybaties参数为数组使用foreach遍历
-<select id="getUserByRoleId_foreach_array" resultMap="userMapByRole">
+1、Mybaties参数为List使用foreach遍历
+<select id="getUserByRoleId_foreach_list" resultMap="userMapByRole">
 		select * from smbms_user where userRole in
-		<foreach collection="array" item="roleIds" open="(" separator=","
-			close=")">#{roleIds}</foreach>
+		<foreach collection="list" item="roleIdList" open="(" separator=","
+			close=")">#{roleIdList}</foreach>
 </select>
-<resultMap type="User" id="userMapByRole">
-		<id property="id" column="id" />
-		<result property="userCode" column="userCode" />
-		<result property="userName" column="userName" />
-</resultMap>
-接口：
-public List<User> getUserByRoleId_foreach_array(Integer [] roleIds);
+2、Mybaties参数为Map使用foreach遍历
+<select id="getUserByConditionMap_foreach_map" resultMap="userMapByRole">
+		select * from smbms_user where gender=#{gender} and userRole in 
+		<foreach collection="roleIds" item="conditionMap" open="(" separator=","
+			close=")">#{conditionMap}</foreach>
+</select>
+接口
+public List<User> getUserByConditionMap_foreach_map(Map<String,Object> conditionMap);
 
+实现类
+		Map<String, Object> conditionMap = new HashMap<String, Object>();
+		List<Integer> roleId = new ArrayList<Integer>();
+		roleId.add(2);
+		conditionMap.put("gender",2);
 
+注意：
+此处的collection为key值
+item为Map集合
+<foreach>#{Map}</foreach>
 
+Mybaties入参Array，List都是由Map实现的所以以后可以直接使用Map，简单情况下可以使用List或Array
 
 
 

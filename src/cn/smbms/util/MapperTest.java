@@ -332,12 +332,59 @@ public class MapperTest {
 
 		}
 	}
+
 	@Test
 	public void TestGetUserListByRoleIdArray() {
 		Integer[] roleIds = { 2, 3 };
 		sqlSession = MyBatisUtil.createSqlSession();
 		list = sqlSession.getMapper(UserMapper.class)
 				.getUserByRoleId_foreach_array(roleIds);
+		MyBatisUtil.closeSQLSession(sqlSession);
+		for (User user : list) {
+			logger.debug(user.toString());
+		}
+	}
+
+	@Test
+	public void TestGetUserListByRoleIdList() {
+		List<Integer> roleIdList = new ArrayList<Integer>();
+		roleIdList.add(2);
+		roleIdList.add(3);
+		sqlSession = MyBatisUtil.createSqlSession();
+		list = sqlSession.getMapper(UserMapper.class)
+				.getUserByRoleId_foreach_list(roleIdList);
+		MyBatisUtil.closeSQLSession(sqlSession);
+		for (User user : list) {
+			logger.debug(user.toString());
+		}
+	}
+
+	@Test
+	public void TestGetUserListByConditionMap() {
+		Map<String, Object> conditionMap = new HashMap<String, Object>();
+		List<Integer> roleId = new ArrayList<Integer>();
+		roleId.add(2);
+		conditionMap.put("gender",2);
+		conditionMap.put("roleIds", roleId);
+		sqlSession = MyBatisUtil.createSqlSession();
+		list = sqlSession.getMapper(UserMapper.class)
+				.getUserByConditionMap_foreach_map(conditionMap);
+		logger.debug(list.size());
+		MyBatisUtil.closeSQLSession(sqlSession);
+		for (User user : list) {
+			logger.debug(user.toString());
+		}
+	}
+	@Test
+	public void TestGetUserListByRoleIdMap() {
+		Map<String, Object> roleMap = new HashMap<String, Object>();
+		List<Integer> roleId = new ArrayList<Integer>();
+		roleId.add(2);
+		roleId.add(1);
+		roleMap.put("roleIds", roleId);
+		sqlSession = MyBatisUtil.createSqlSession();
+		list = sqlSession.getMapper(UserMapper.class).getUserByRoleId_foreach_map(roleMap);
+		logger.debug(list.size());
 		MyBatisUtil.closeSQLSession(sqlSession);
 		for (User user : list) {
 			logger.debug(user.toString());

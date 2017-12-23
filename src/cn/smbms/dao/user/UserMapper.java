@@ -19,4 +19,7 @@ public interface UserMapper {
 	public List<User> getUserByUserRole(@Param("userRole")Integer userRole);
 	public List<User> getUserAddressList(@Param("id")Integer id);
 	public List<User> getUserByRoleId_foreach_array(Integer [] roleIds);
+	public List<User> getUserByRoleId_foreach_list(List<Integer> roleIdList);
+	public List<User> getUserByConditionMap_foreach_map(Map<String,Object> conditionMap);
+	public List<User> getUserByRoleId_foreach_map(Map<String,Object> roleMap);
 }
