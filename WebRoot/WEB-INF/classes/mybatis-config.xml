@@ -17,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<settings>
 		<setting name="logImpl" value="LOG4J" />
 		<!-- 设置resultMap级别为NONE（禁止自动匹配） -->
-		<setting name="autoMappingBehavior" value="NONE"/>
+		<setting name="autoMappingBehavior" value="FULL"/>
 	</settings>
 	<typeAliases>
 		<!-- <typeAlias alias="User" type="cn.smbms.bean.User"/> <typeAlias alias="provider" 

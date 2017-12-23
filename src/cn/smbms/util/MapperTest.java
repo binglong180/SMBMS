@@ -390,4 +390,21 @@ public class MapperTest {
 			logger.debug(user.toString());
 		}
 	}
+	@Test
+	public void TestGetUserListChooes() {
+		sqlSession = MyBatisUtil.createSqlSession();
+		Date date=null;
+		try {
+			date = new SimpleDateFormat("yyyy-MM-dd").parse("2016-01-01");
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		list = sqlSession.getMapper(UserMapper.class).getUserList_choose("", null, "", date);
+		logger.debug(list.size());
+		MyBatisUtil.closeSQLSession(sqlSession);
+		for (User user : list) {
+			logger.debug(user.toString());
+		}
+	}
 }

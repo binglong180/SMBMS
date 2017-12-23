@@ -122,26 +122,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	<select id="getUserByRoleId_foreach_list" resultMap="userMapByRole">
 		select * from smbms_user where userRole in
-		<foreach collection="list" item="roleIdList" open="(" separator=","
-			close=")">#{roleIdList}</foreach>
+		<foreach collection="list" item="roleIdList" open="("
+			separator="," close=")">#{roleIdList}</foreach>
 	</select>
 	<select id="getUserByConditionMap_foreach_map" resultMap="userMapByRole">
-		select * from smbms_user where gender=#{gender} and userRole in 
-		<foreach collection="roleIds" item="conditionMap" open="(" separator=","
-			close=")">#{conditionMap}</foreach>
+		select * from smbms_user where gender=#{gender} and userRole in
+		<foreach collection="roleIds" item="conditionMap" open="("
+			separator="," close=")">#{conditionMap}</foreach>
 	</select>
 	<select id="getUserByRoleId_foreach_map" resultMap="userMapByRole">
-		select * from smbms_user where userRole in 
-		<foreach collection="roleIds" item="roleMap" open="(" separator=","
-			close=")">#{roleMap}</foreach>
+		select * from smbms_user where userRole in
+		<foreach collection="roleIds" item="roleMap" open="("
+			separator="," close=")">#{roleMap}</foreach>
 	</select>
-	
+
 	<resultMap type="User" id="userMapByRole">
 		<id property="id" column="id" />
 		<result property="userCode" column="userCode" />
 		<result property="userName" column="userName" />
 	</resultMap>
-	
+	<select id="getUserList_choose" resultType="User">
+		select * from smbms_user where 1=1
+		<choose>
+			<when test="userName!=null and userName!=''">
+				and userName like concat('%',#{userName},'%')
+			</when>
+			<when test="userCode!=null and userCode!=''">
+				and userCode like concat('%',#{userCode},'%')
+			</when>
+			<when test="userRole!=null and userRole!=''">
+				and userRole=#{userRole}
+			</when>
+			<otherwise>
+				and YEAR(creationDate)=YEAR(#{creationDate})
+			</otherwise>
+		</choose>
+	</select>
 </mapper>
 
 

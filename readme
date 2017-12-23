@@ -1,34 +1,17 @@
-SMBMS 8.0
+SMBMS 9.0
 技术点：
-1、Mybaties参数为List使用foreach遍历
-<select id="getUserByRoleId_foreach_list" resultMap="userMapByRole">
-		select * from smbms_user where userRole in
-		<foreach collection="list" item="roleIdList" open="(" separator=","
-			close=")">#{roleIdList}</foreach>
-</select>
-2、Mybaties参数为Map使用foreach遍历
-<select id="getUserByConditionMap_foreach_map" resultMap="userMapByRole">
-		select * from smbms_user where gender=#{gender} and userRole in 
-		<foreach collection="roleIds" item="conditionMap" open="(" separator=","
-			close=")">#{conditionMap}</foreach>
-</select>
-接口
-public List<User> getUserByConditionMap_foreach_map(Map<String,Object> conditionMap);
-
-实现类
-		Map<String, Object> conditionMap = new HashMap<String, Object>();
-		List<Integer> roleId = new ArrayList<Integer>();
-		roleId.add(2);
-		conditionMap.put("gender",2);
-
-注意：
-此处的collection为key值
-item为Map集合
-<foreach>#{Map}</foreach>
-
-Mybaties入参Array，List都是由Map实现的所以以后可以直接使用Map，简单情况下可以使用List或Array
-
-
-
-
-
+1、使用choose来实现多参数动态查询
+<choose>
+			<when test="userName!=null and userName!=''">
+				and userName like concat('%',#{userName},'%')
+			</when>
+			<when test="userCode!=null and userCode!=''">
+				and userCode like concat('%',#{userCode},'%')
+			</when>
+			<when test="userRole!=null and userRole!=''">
+				and userRole=#{userRole}
+			</when>
+			<otherwise>
+				and YEAR(creationDate)=YEAR(#{creationDate})
+			</otherwise>
+</choose>
